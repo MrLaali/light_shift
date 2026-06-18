@@ -85,14 +85,18 @@ class ColorDetailsDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final isMobile = screenWidth < 700;
+
     return Dialog(
       backgroundColor: const Color(0xFF181818),
+      insetPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(28),
       ),
       child: Container(
-        width: 900,
-        padding: const EdgeInsets.all(28),
+        width: isMobile ? screenWidth * 0.92 : 900,
+        padding: EdgeInsets.all(isMobile ? 20 : 28),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -107,24 +111,33 @@ class ColorDetailsDialog extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 8),
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
+            if (isMobile)
+              Column(
                 children: lightProfiles.map((light) {
                   final color = testedColor.colorFor(light.type);
                   final hex = _hexFromColor(color);
 
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 12),
-                    child: _ColorDetailItem(
-                      light: light,
-                      color: color,
-                      hex: hex,
-                    ),
+                  return _MobileColorDetailItem(
+                    light: light,
+                    color: color,
+                    hex: hex,
+                  );
+                }).toList(),
+              )
+            else
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: lightProfiles.map((light) {
+                  final color = testedColor.colorFor(light.type);
+                  final hex = _hexFromColor(color);
+
+                  return _DesktopColorDetailItem(
+                    light: light,
+                    color: color,
+                    hex: hex,
                   );
                 }).toList(),
               ),
-            ),
           ],
         ),
       ),
@@ -132,16 +145,27 @@ class ColorDetailsDialog extends StatelessWidget {
   }
 }
 
-class _ColorDetailItem extends StatelessWidget {
+class _DesktopColorDetailItem extends StatelessWidget {
   final LightProfile light;
   final Color color;
   final String hex;
 
-  const _ColorDetailItem({
+  const _DesktopColorDetailItem({
     required this.light,
     required this.color,
     required this.hex,
   });
+
+  void _copyHex(BuildContext context) {
+    Clipboard.setData(ClipboardData(text: hex));
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('$hex copied'),
+        duration: const Duration(milliseconds: 1200),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -166,18 +190,7 @@ class _ColorDetailItem extends StatelessWidget {
           ),
           const SizedBox(height: 16),
           GestureDetector(
-            onTap: () {
-              Clipboard.setData(
-                ClipboardData(text: hex),
-              );
-
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text('$hex copied'),
-                  duration: const Duration(milliseconds: 1200),
-                ),
-              );
-            },
+            onTap: () => _copyHex(context),
             child: Container(
               width: 62,
               height: 62,
@@ -195,15 +208,106 @@ class _ColorDetailItem extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 12),
-          Text(
-            hex,
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 11,
-              fontWeight: FontWeight.w600,
+          GestureDetector(
+            onTap: () => _copyHex(context),
+            child: Text(
+              hex,
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 11,
+                fontWeight: FontWeight.w600,
+              ),
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class _MobileColorDetailItem extends StatelessWidget {
+  final LightProfile light;
+  final Color color;
+  final String hex;
+
+  const _MobileColorDetailItem({
+    required this.light,
+    required this.color,
+    required this.hex,
+  });
+
+  void _copyHex(BuildContext context) {
+    Clipboard.setData(ClipboardData(text: hex));
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('$hex copied'),
+        duration: const Duration(milliseconds: 1200),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () => _copyHex(context),
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 12),
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+        decoration: BoxDecoration(
+          color: const Color(0xFF202020),
+          borderRadius: BorderRadius.circular(18),
+          border: Border.all(
+            color: const Color(0xFF2A2A2A),
+          ),
+        ),
+        child: Row(
+          children: [
+            SizedBox(
+              width: 92,
+              child: Row(
+                children: [
+                  Icon(
+                    Icons.lightbulb_rounded,
+                    color: light.color,
+                    size: 22,
+                  ),
+                  const SizedBox(width: 8),
+                  Text(
+                    light.name,
+                    style: const TextStyle(
+                      color: Colors.white70,
+                      fontSize: 13,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const Spacer(),
+            Container(
+              width: 42,
+              height: 42,
+              decoration: BoxDecoration(
+                color: color,
+                shape: BoxShape.circle,
+              ),
+            ),
+            const Spacer(),
+            SizedBox(
+              width: 78,
+              child: Text(
+                hex,
+                textAlign: TextAlign.right,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 11,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
