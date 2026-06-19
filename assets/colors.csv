@@ -1,2 +1,8 @@
 name,white,red,green,blue,yellow,magenta,cyan
 White,#FFFFFF,#FF0000,#00FF00,#0000FF,#FFFF00,#FF00FF,#00FFFF
+Red,#a64b45
+Blue,#42436e
+Green,#507732
+Yellow,#dce238
+Magenta,#793860
+Cyan,#60877e
