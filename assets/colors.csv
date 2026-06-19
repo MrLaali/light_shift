@@ -1,8 +1,8 @@
 name,white,red,green,blue,yellow,magenta,cyan
 White,#FFFFFF,#FF0000,#00FF00,#0000FF,#FFFF00,#FF00FF,#00FFFF
-Red,#a64b45
-Blue,#42436e
-Green,#507732
-Yellow,#dce238
-Magenta,#793860
-Cyan,#60877e
+Red,#b54741,#ef0000,#1c6700,#000079,#af5400,#c70065,#0c5a55
+Green,#508738,#840000,#009800,#000d7a,#4e8f00,#660065,#009852
+Blue,#3b3d69,#630000,#005d00,#0000a4,#3e5200,#4c0095,#004d83
+Yellow,#d9e200,#ff0000,#00ec00,#002572,#cbe000,#e91a65,#00ec1b
+Magenta,#81335f,#b20000,#025800,#00009c,#7e4500,#8f0083,#004377
+Cyan,#5c9187,#8c0000,#00a200,#0001c5,#4e9600,#7400b7,#009e9e
