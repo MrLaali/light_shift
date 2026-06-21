@@ -40,13 +40,13 @@ class AppTopBar extends StatelessWidget implements PreferredSizeWidget {
                   textBaseline: TextBaseline.alphabetic,
                   children: [
                     Icon(
-                      Icons.palette_outlined,
+                      Icons.lightbulb_outline,
                       color: Colors.white,
                       size: 24,
                     ),
                     SizedBox(width: 12),
                     Text(
-                      'Light Palette',
+                      'Light Shift',
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 22,

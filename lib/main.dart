@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'screens/palette_screen.dart';
+import 'screens/home_screen.dart';
 
 void main() {
   runApp(const LightPaletteApp());
@@ -14,9 +14,16 @@ class LightPaletteApp extends StatelessWidget {
       title: 'Light Palette Simulator',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        useMaterial3: true,
+        navigationBarTheme: const NavigationBarThemeData(
+          backgroundColor: Color(0xFF181818),
+          indicatorColor: Color(0xFF2A2A2A),
+          labelTextStyle: WidgetStatePropertyAll(
+            TextStyle(color: Colors.white),
+          ),
+          iconTheme: WidgetStatePropertyAll(IconThemeData(color: Colors.white)),
+        ),
       ),
-      home: const PaletteScreen(),
+      home: const HomeScreen(),
     );
   }
 }
